@@ -1,0 +1,33 @@
+version: "3.8"
+
+# 실행할 컨테이너(서비스)들을 정의합니다.
+services:
+  # 'db' 라는 이름의 MySQL 데이터베이스 서비스를 정의합니다.
+  db:
+    image: mysql:5.7 # Docker Hub의 mysql:5.7 공식 이미지를 사용합니다.
+    container_name: wordpress-db
+    volumes: # 데이터베이스 파일들을 영구적으로 저장할 볼륨을 연결합니다.
+      - wordpress_data:/var/lib/mysql
+    environment: # 데이터베이스 설정을 위한 환경변수입니다.
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress-pw
+
+  # 'wordpress' 라는 이름의 웹 애플리케이션 서비스를 정의합니다.
+  wordpress:
+    image: wordpress:latest # Docker Hub의 wordpress 최신 공식 이미지를 사용합니다.
+    container_name: wordpress-app
+    depends_on: # 'db' 서비스가 먼저 실행된 후에 실행되도록 순서를 정합니다.
+      - db
+    ports: # 내 컴퓨터의 9000 포트를 컨테이너의 80 포트에 연결합니다.
+      - "9000:80"
+    environment: # WordPress가 데이터베이스에 접속하기 위한 정보입니다.
+      WORDPRESS_DB_HOST: db:3306 # DB 주소로 컨테이너 이름인 'db'를 사용합니다!
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress-pw
+      WORDPRESS_DB_NAME: wordpress
+
+# 이 파일에서 사용할 볼륨의 이름을 선언합니다.
+volumes:
+  wordpress_data:
