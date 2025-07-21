@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.20.250:5432/hello_db
+    username: hellouser
+    password: hellouser123
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
