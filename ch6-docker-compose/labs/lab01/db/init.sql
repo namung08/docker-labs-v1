@@ -5,6 +5,6 @@ create table greetings (
 );
 
 INSERT INTO greetings (lang_code, message)
-VALUES ('KR', '안녕하세요'),
-       ('EN', 'Hello'),
-       ('JP', 'こんにちは');
+VALUES ('kr', '안녕하세요'),
+       ('en', 'Hello'),
+       ('jp', 'こんにちは');

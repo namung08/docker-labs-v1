@@ -39,3 +39,5 @@ services:
       - DB_URL=jdbc:postgresql://db:5432/hello_db  # DB 호스트는 서비스명(db)
       - DB_USER=hellouser
       - DB_PW=hellouser123
+    networks:
+      - ch6-lab01
