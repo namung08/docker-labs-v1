@@ -1,0 +1,41 @@
+version: "3.8"  # Docker Compose 파일 버전
+
+networks:
+  ch6-lab01:  # 서비스 간 통신을 위한 사용자 정의 네트워크 생성
+
+volumes:
+  postgres-data:  # PostgreSQL 데이터 영구 저장용 볼륨 정의
+
+services:
+  # =======================
+  # PostgreSQL 데이터베이스
+  # =======================
+  db:
+    image: postgres              # 공식 PostgreSQL 이미지 사용
+    restart: unless-stopped      # 컨테이너가 중지되면 자동 재시작 (수동 stop 제외)
+    ports:
+      - "5432:5432"              # 호스트 5432 포트를 컨테이너 5432와 매핑
+    volumes:
+      - postgres-data:/var/lib/postgresql/data   # DB 데이터 저장 (볼륨 사용)
+      - ./db:/docker-entrypoint-initdb.d         # 초기 SQL 실행 스크립트 경로
+    networks:
+      - ch6-lab01                # backend 서비스와 통신할 네트워크
+    environment:
+      - POSTGRES_USER=hellouser      # DB 접속 계정
+      - POSTGRES_PASSWORD=hellouser123  # DB 접속 비밀번호
+      - POSTGRES_DB=hello_db         # 생성할 기본 DB 이름
+
+  # =======================
+  # Spring Boot 백엔드 서비스
+  # =======================
+  backend:
+    build: ./backend             # ./backend 디렉토리의 Dockerfile로 이미지 빌드
+    depends_on:
+      - db                       # DB가 먼저 실행된 후 backend 실행
+    ports:
+      - "8080:8080"              # 호스트 8080 → 컨테이너 8080 매핑
+    environment:
+      # DB 접속 정보 (Spring Boot의 application.yml에서 ${}로 참조)
+      - DB_URL=jdbc:postgresql://db:5432/hello_db  # DB 호스트는 서비스명(db)
+      - DB_USER=hellouser
+      - DB_PW=hellouser123
