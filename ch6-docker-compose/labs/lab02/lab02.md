@@ -19,3 +19,22 @@ hello world 풀스택 프로젝트를 컨테이너로 배포하세요.
 - 커스텀 네트워크 생성 및 3개 컨테이너 모두 해당 네트워크에서 동작
 - frontend와 backend 컨테이너는 서로 컨테이너 이름 기준으로 통신
 - 컨테이너 재빌드/재시작 후에도 정상 동작해야 함
+
+### ssh 키 생성 법
+
+```shell
+mkdir -p ./certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+-keyout ./certs/privkey.pem \
+-out ./certs/fullchain.pem
+```
+
+```pgsql
+Country Name (2 letter code) [AU]: KR
+State or Province Name (full name) [Some-State]: Seoul
+Locality Name (eg, city) []: Seoul
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: MyOrg
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []: localhost
+Email Address []:
+```

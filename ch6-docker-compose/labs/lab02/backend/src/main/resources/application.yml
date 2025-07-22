@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url:
-    username: hellouser
-    password: hellouser123
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PW}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true

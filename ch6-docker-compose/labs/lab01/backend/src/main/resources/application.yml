@@ -9,3 +9,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: password
+    key-store-type: PKCS12
+    key-alias: tomcat
